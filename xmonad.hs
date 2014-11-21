@@ -21,9 +21,9 @@ myStartupHook = do
 	execScriptHook "startup"
 
 myLayout = windowNavigation
-		$ onWorkspace "3:pidgin" im
+		$ onWorkspace "4:chat" im
 		$ subLayout [] subThirds
-		$ onWorkspace "1:consoles" (thespiral ||| Full)
+		$ onWorkspace "1:terms" (thespiral ||| Full)
 		$ tiled ||| Full ||| thespiral ||| Circle
 	where
 		-- one master window, half screen, and 3/100ths resize interval
@@ -37,12 +37,15 @@ myLayout = windowNavigation
 		gridLayout = spacing 8 Grid
 
 myManageHook = composeAll
-   [ className =? "google-chrome" --> doShift "3:chrome"
-   , className =? "Pidgin" --> doShift "3:pidgin"
+   [ className =? "google-chrome" --> doShift "2:browsers"
+   , className =? "firefox" --> doShift "2:browsers"
+   , className =? "Pidgin" --> doShift "4:chat"
+   , className =? "Skype" --> doShift "4:chat"
    ]
 
 main = xmonad defaultConfig {
 	startupHook = myStartupHook,
+	workspaces = ["1:terms", "2:browsers", "3:dev", "4:chat", "5", "6", "7", "8", "9"],
 	logHook = fadeInactiveLogHook 0.7,
 	terminal = "xfce4-terminal",
 	manageHook = myManageHook <+> manageHook defaultConfig, -- uses default too

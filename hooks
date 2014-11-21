@@ -1,6 +1,6 @@
 #!/bin/bash
 
-feh --bg-fill ~/Pictures/bg2.jpg
+/home/mike/bin/bgreset
 export DISPLAY=":0.0"
 xcompmgr -n &
 batterywatch &
