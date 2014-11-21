@@ -58,6 +58,7 @@ main = xmonad defaultConfig {
                 ((mod4Mask, xK_F7), spawn "volume 0"),
                 ((mod4Mask, xK_F8), spawn "volume down"),
                 ((mod4Mask, xK_F9), spawn "volume up"),
+                ((controlMask, xK_F4), spawn "mikehelp"),
 				((mod1Mask .|. controlMask, xK_h), sendMessage $ pullGroup L),
 				((mod1Mask .|. controlMask, xK_l), sendMessage $ pullGroup R),
 				((mod1Mask .|. controlMask, xK_k), sendMessage $ pullGroup U),
