@@ -16,6 +16,7 @@ import XMonad.Layout.BoringWindows
 import XMonad.Layout.WindowNavigation
 import XMonad.Layout.PerWorkspace
 import XMonad.Actions.SpawnOn
+import XMonad.Util.EZConfig
 
 myStartupHook = do
 	execScriptHook "startup"
@@ -43,33 +44,52 @@ myManageHook = composeAll
    , className =? "Skype" --> doShift "4:chat"
    ]
 
-main = xmonad defaultConfig {
+main = xmonad $ defaultConfig {
 	startupHook = myStartupHook,
 	workspaces = ["1:terms", "2:browsers", "3:dev", "4:chat", "5", "6", "7", "8", "9"],
 	logHook = fadeInactiveLogHook 0.7,
 	terminal = "xfce4-terminal",
 	manageHook = myManageHook <+> manageHook defaultConfig, -- uses default too
 	borderWidth = 0,
-	keys = keys defaultConfig `mappend`
-        \c -> fromList [
-                ((mod4Mask, xK_space), spawn "battery"),
-                ((mod4Mask, xK_F5), spawn "sudo brightness down"),
-                ((mod4Mask, xK_F6), spawn "sudo brightness up"),
-                ((mod4Mask, xK_F7), spawn "volume 0"),
-                ((mod4Mask, xK_F8), spawn "volume down"),
-                ((mod4Mask, xK_F9), spawn "volume up"),
-                ((controlMask, xK_F1), spawn "/home/mike/bin/mikehelp"),
-				((mod1Mask .|. controlMask, xK_h), sendMessage $ pullGroup L),
-				((mod1Mask .|. controlMask, xK_l), sendMessage $ pullGroup R),
-				((mod1Mask .|. controlMask, xK_k), sendMessage $ pullGroup U),
-				((mod1Mask .|. controlMask, xK_j), sendMessage $ pullGroup D),
-				((mod1Mask .|. controlMask, xK_m), withFocused (sendMessage . MergeAll)),
-				((mod1Mask .|. controlMask, xK_u), withFocused (sendMessage . UnMerge)),
-				((mod1Mask .|. controlMask, xK_period), focusUp),
-				((mod1Mask .|. controlMask, xK_comma), focusDown)
-				-- ((0, xK_Print), spawn "gnome-screenshot -i")
-        ],
+	modMask = mod4Mask,
 	layoutHook = myLayout
-}
+} `additionalKeysP` specialKeys `additionalKeys` normalKeys
+	where
+		specialKeys =
+			[ ("<XF86MonBrightnessUp>",   spawn "sudo brightness up")
+			, ("<XF86MonBrightnessDown>", spawn "sudo brightness down")
+			, ("<XF86AudioRaiseVolume>",  spawn "volume up")
+			, ("<XF86AudioLowerVolume>",  spawn "volume down")
+			, ("<XF86AudioMute>",         spawn "volume 0") ]
+		normalKeys =
+			[ ((controlMask, xK_space), spawn "battery")
+			-- , ((mod4Mask, xK_F5), spawn "sudo brightness down")
+			-- , ((mod4Mask, xK_F6), spawn "sudo brightness up")
+			-- , ((mod4Mask, xK_F7), spawn "volume 0")
+			-- , ((mod4Mask, xK_F8), spawn "volume down")
+			-- , ((mod4Mask, xK_F9), spawn "volume up")
+			, ((controlMask, xK_F1), spawn "/home/mike/bin/mikehelp")
+			, ((mod1Mask .|. controlMask, xK_h), sendMessage $ pullGroup L)
+			, ((mod1Mask .|. controlMask, xK_l), sendMessage $ pullGroup R)
+			, ((mod1Mask .|. controlMask, xK_k), sendMessage $ pullGroup U)
+			, ((mod1Mask .|. controlMask, xK_j), sendMessage $ pullGroup D)
+			, ((mod1Mask .|. controlMask, xK_m), withFocused (sendMessage . MergeAll))
+			, ((mod1Mask .|. controlMask, xK_u), withFocused (sendMessage . UnMerge))
+			, ((mod1Mask .|. controlMask, xK_period), focusUp)
+			, ((mod1Mask .|. controlMask, xK_comma), focusDown)
+			-- , ((0, xK_Print), spawn "gnome-screenshot -i")
+			]
 
 
+{-
+    keycode 232 (keysym 0x1008ff03, XF86MonBrightnessDown)
+    keycode 233 (keysym 0x1008ff02, XF86MonBrightnessUp)
+    keycode 237 (keysym 0x1008ff06, XF86KbdBrightnessDown)
+    keycode 238 (keysym 0x1008ff05, XF86KbdBrightnessUp)
+    keycode 173 (keysym 0x1008ff16, XF86AudioPrev)
+    keycode 172 (keysym 0x1008ff14, XF86AudioPlay)
+    keycode 171 (keysym 0x1008ff17, XF86AudioNext)
+    keycode 121 (keysym 0x1008ff12, XF86AudioMute)
+    keycode 122 (keysym 0x1008ff11, XF86AudioLowerVolume)
+    keycode 123 (keysym 0x1008ff13, XF86AudioRaiseVolume)
+-}
