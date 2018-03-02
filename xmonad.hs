@@ -19,66 +19,56 @@ import XMonad.Actions.SpawnOn
 import XMonad.Util.EZConfig
 
 myStartupHook = do
-	execScriptHook "startup"
+  execScriptHook "startup"
 
 myLayout = windowNavigation
-		$ onWorkspace "4:chat" im
-		$ subLayout [] subThirds
-		$ onWorkspace "1:terms" (thespiral ||| Full)
-		$ tiled ||| Full ||| thespiral ||| Circle
-	where
-		-- one master window, half screen, and 3/100ths resize interval
-		tiled = Tall 1 (3/100) (1/2)
-		-- sublayout, one master at 2/3rds, unresizable
-		subThirds = Tall 1 0 (1/3)
-		-- spiral layout
-		thespiral = spiralWithDir South CW (4/7)
-		-- IM
-		im = withIM (18/100) (Role "buddy_list") gridLayout
-		gridLayout = spacing 8 Grid
+    $ subLayout [] subThirds
+    $ onWorkspace "1:terms" (thespiral ||| Full ||| gridLayout)
+    $ tiled ||| Full ||| thespiral ||| Circle ||| gridLayout
+  where
+    -- one master window, half screen, and 3/100ths resize interval
+    tiled = Tall 1 (3/100) (1/2)
+    -- sublayout, one master at 2/3rds, unresizable
+    subThirds = Tall 1 0 (1/3)
+    -- spiral layout
+    thespiral = spiralWithDir South CW (4/7)
+    -- fancy spaced grid
+    gridLayout = spacing 8 Grid
 
 myManageHook = composeAll
    [ className =? "google-chrome" --> doShift "2:browsers"
-   , className =? "firefox" --> doShift "2:browsers"
-   , className =? "Pidgin" --> doShift "4:chat"
-   , className =? "Skype" --> doShift "4:chat"
    ]
 
 main = xmonad $ defaultConfig {
-	startupHook = myStartupHook,
-	workspaces = ["1:terms", "2:browsers", "3:dev", "4:chat", "5", "6", "7", "8", "9"],
-	logHook = fadeInactiveLogHook 0.7,
-	terminal = "xfce4-terminal",
-	manageHook = myManageHook <+> manageHook defaultConfig, -- uses default too
-	borderWidth = 0,
-	modMask = mod4Mask,
-	layoutHook = myLayout
+  startupHook = myStartupHook,
+  workspaces = ["1:terms", "2:browsers", "3:dev", "4", "5", "6", "7", "8", "9"],
+  logHook = fadeInactiveLogHook 0.7,
+  manageHook = myManageHook <+> manageHook defaultConfig, -- uses default too
+  borderWidth = 0,
+  -- modMask = mod4Mask,
+  layoutHook = myLayout
 } `additionalKeysP` specialKeys `additionalKeys` normalKeys
-	where
-		specialKeys =
-			[ ("<XF86MonBrightnessUp>",   spawn "sudo brightness up")
-			, ("<XF86MonBrightnessDown>", spawn "sudo brightness down")
-			, ("<XF86AudioRaiseVolume>",  spawn "volume up")
-			, ("<XF86AudioLowerVolume>",  spawn "volume down")
-			, ("<XF86AudioMute>",         spawn "volume 0") ]
-		normalKeys =
-			[ ((controlMask, xK_space), spawn "battery")
-			-- , ((mod4Mask, xK_F5), spawn "sudo brightness down")
-			-- , ((mod4Mask, xK_F6), spawn "sudo brightness up")
-			-- , ((mod4Mask, xK_F7), spawn "volume 0")
-			-- , ((mod4Mask, xK_F8), spawn "volume down")
-			-- , ((mod4Mask, xK_F9), spawn "volume up")
-			, ((controlMask, xK_F1), spawn "/home/mike/bin/mikehelp")
-			, ((mod1Mask .|. controlMask, xK_h), sendMessage $ pullGroup L)
-			, ((mod1Mask .|. controlMask, xK_l), sendMessage $ pullGroup R)
-			, ((mod1Mask .|. controlMask, xK_k), sendMessage $ pullGroup U)
-			, ((mod1Mask .|. controlMask, xK_j), sendMessage $ pullGroup D)
-			, ((mod1Mask .|. controlMask, xK_m), withFocused (sendMessage . MergeAll))
-			, ((mod1Mask .|. controlMask, xK_u), withFocused (sendMessage . UnMerge))
-			, ((mod1Mask .|. controlMask, xK_period), focusUp)
-			, ((mod1Mask .|. controlMask, xK_comma), focusDown)
-			-- , ((0, xK_Print), spawn "gnome-screenshot -i")
-			]
+  where
+    specialKeys =
+      [ ("<XF86MonBrightnessUp>",   spawn "sudo brightness up")
+      , ("<XF86MonBrightnessDown>", spawn "sudo brightness down")
+      , ("<XF86AudioRaiseVolume>",  spawn "volume up")
+      , ("<XF86AudioLowerVolume>",  spawn "volume down")
+      , ("<XF86AudioMute>",         spawn "volume 0") ]
+    normalKeys =
+      [ ((controlMask, xK_space), spawn "battery")
+      -- , ((controlMask, xK_F1), spawn "/home/mike/bin/mikehelp")
+      , ((mod1Mask .|. controlMask, xK_l), spawn "slock")
+      , ((mod1Mask .|. controlMask, xK_h), sendMessage $ pullGroup L)
+      -- , ((mod1Mask .|. controlMask, xK_l), sendMessage $ pullGroup R)
+      , ((mod1Mask .|. controlMask, xK_k), sendMessage $ pullGroup U)
+      , ((mod1Mask .|. controlMask, xK_j), sendMessage $ pullGroup D)
+      , ((mod1Mask .|. controlMask, xK_m), withFocused (sendMessage . MergeAll))
+      , ((mod1Mask .|. controlMask, xK_u), withFocused (sendMessage . UnMerge))
+      , ((mod1Mask .|. controlMask, xK_period), focusUp)
+      , ((mod1Mask .|. controlMask, xK_comma), focusDown)
+      , ((0, xK_Print), spawn "gnome-screenshot -i")
+      ]
 
 
 {-

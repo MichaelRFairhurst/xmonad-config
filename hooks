@@ -1,6 +1,6 @@
 #!/bin/bash
 
-/home/mike/bin/bgreset
-export DISPLAY=":0.0"
+#/home/mike/bin/bgreset
+#export DISPLAY=":0.0"
 xcompmgr -n &
 batterywatch &
