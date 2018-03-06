@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#/home/mike/bin/bgreset
+feh --bg-fill ~/xmonad/bg.jpg
 #export DISPLAY=":0.0"
 xcompmgr -n &
 batterywatch &

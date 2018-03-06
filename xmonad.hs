@@ -4,6 +4,7 @@ import XMonad.Layout.IM
 import XMonad.Layout.Grid
 import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.Script
+import XMonad.Hooks.SetWMName
 import XMonad.Layout.Spiral
 import XMonad.Layout.Spacing
 import XMonad.Layout.SubLayouts
@@ -18,8 +19,9 @@ import XMonad.Layout.PerWorkspace
 import XMonad.Actions.SpawnOn
 import XMonad.Util.EZConfig
 
-myStartupHook = do
-  execScriptHook "startup"
+myStartupHook =
+  (execScriptHook "startup") >>
+  (setWMName "LG3D") -- Required for IntelliJ to work
 
 myLayout = windowNavigation
     $ subLayout [] subThirds
