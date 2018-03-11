@@ -1,6 +1,7 @@
 #!/bin/bash
 
-feh --bg-fill ~/xmonad/bg.jpg
-#export DISPLAY=":0.0"
+feh --bg-fill ~/.xmonad/bg.jpg
 xcompmgr -n &
-batterywatch &
+(ps -ax | grep -q batterywatc[h]) || (batterywatch &)
+
+mfsplash /var/lib/mfsplash/icon/welcome.png --text "Welcome to XMonad..."

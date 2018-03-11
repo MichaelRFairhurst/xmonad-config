@@ -52,13 +52,14 @@ main = xmonad $ defaultConfig {
 } `additionalKeysP` specialKeys `additionalKeys` normalKeys
   where
     specialKeys =
-      [ ("<XF86MonBrightnessUp>",   spawn "sudo brightness up")
-      , ("<XF86MonBrightnessDown>", spawn "sudo brightness down")
+      [ ("<XF86MonBrightnessUp>",   spawn "brightness up")
+      , ("<XF86MonBrightnessDown>", spawn "brightness down")
       , ("<XF86AudioRaiseVolume>",  spawn "volume up")
       , ("<XF86AudioLowerVolume>",  spawn "volume down")
-      , ("<XF86AudioMute>",         spawn "volume 0") ]
+      , ("<XF86AudioMute>",         spawn "volume toggle") ]
     normalKeys =
-      [ ((controlMask, xK_space), spawn "battery")
+      [ ((controlMask, xK_b), spawn "battery")
+      , ((controlMask, xK_t), spawn "clock")
       -- , ((controlMask, xK_F1), spawn "/home/mike/bin/mikehelp")
       , ((mod1Mask .|. controlMask, xK_l), spawn "slock")
       , ((mod1Mask .|. controlMask, xK_h), sendMessage $ pullGroup L)
