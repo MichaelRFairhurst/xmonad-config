@@ -1,6 +1,6 @@
 #!/bin/bash
 
-feh --bg-fill ~/.xmonad/bg.jpg
+feh --bg-fill ~/.xmonad/bg.png
 xcompmgr -n &
 (ps -ax | grep -q batterywatc[h]) || (batterywatch &)
 
